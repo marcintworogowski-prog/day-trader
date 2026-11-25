@@ -1,0 +1,39 @@
+name: weekly-report
+
+on:
+  schedule:
+    # Friday 22:30 UTC: after the close in winter and summer time, early closes too
+    - cron: "30 22 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: weekly-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Build the report
+        run: python3 bot/weekly_report.py --out "$RUNNER_TEMP/body.md" --title-out "$RUNNER_TEMP/title.txt"
+      - name: Open or update the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="$(cat "$RUNNER_TEMP/title.txt")"
+          # a second run on the same day updates that day's issue
+          number="$(gh issue list --state all --limit 200 --json number,title \
+            | jq -r --arg t "$title" 'map(select(.title == $t)) | .[0].number // empty')"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          fi

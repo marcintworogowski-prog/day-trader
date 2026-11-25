@@ -21,6 +21,8 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
   zakresu otwarcia na 100 akcjach z `bot/universe.txt`, stop w połowie zakresu,
   cel 2R, wielkość z trader-budget, każda transakcja przez trader-risk.
 - Limity: `bot/limits.json` (bez danych osobowych). `paper` musi być `true`.
+- Najwyżej 2 otwarte pozycje bota (`max_open_positions`), pozycja min. 1000 $
+  (`min_order_usd`); mniejsze sygnały są pomijane i nie zużywają limitu dnia.
 - Cena wykonania: ostatnia cena, 0,05% na niekorzyść. Stop i cel sprawdzane na
   ostatniej cenie w danym kroku. Sygnał starszy niż 20 min jest pomijany.
 - 10 min przed końcem sesji zamyka wszystko. Gdy krok przepadnie, następny
@@ -31,6 +33,9 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
 - Kalendarz NYSE w `trader-entry` kończy się na 2027: potem trzeba go uzupełnić.
 - `.github/workflows/paper-bot.yml`: co 10 minut pon-pt 13:00-21:59 UTC i
   ręcznie; zapisuje zmiany w `journal/`. GitHub może się spóźniać lub pominąć krok.
+- `.github/workflows/weekly-report.yml`: w piątek 22:30 UTC i ręcznie uruchamia
+  `bot/weekly_report.py` i tworzy Issue "Raport tygodnia RRRR-MM-DD" (ponownie
+  tego samego dnia: aktualizuje je). Dni z problemami bierze z logów dnia.
 - Przed ręczną zmianą dziennika `git pull`, po niej commit i `git push`.
 - Bot nie używa SEC, brokera ani kluczy. E-mail, `trader/` i `repo/` nie mogą
   trafić na GitHuba. Commity tylko z adresem noreply (ustawiony w tym repo).
@@ -48,7 +53,7 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
 | folder | co |
 | --- | --- |
 | `.claude/skills/` | skille, których używa Claude |
-| `repo/` | sklonowane repo; własne pliki: `repo/tests/test_review.py`, `test_bot.py` (nie ma ich na GitHubie) |
+| `repo/` | sklonowane repo; własne pliki: `repo/tests/test_review.py`, `test_bot.py`, `test_weekly_report.py` (nie ma ich na GitHubie) |
 | `bot/` | bot papierowy, limity, lista akcji |
 | `trader/` | `config.json` i pliki robocze skilli (dane osobowe, nie publikuj) |
 | `journal/trades.csv` | dziennik transakcji |

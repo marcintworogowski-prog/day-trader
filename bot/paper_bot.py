@@ -135,7 +135,7 @@ class Bot(object):
         self.journal = os.path.join(root, "journal", "trades.csv")
         self.signals = 0
         self.errors = []
-        self.no_cash = []
+        self.too_small = []
         self.failed = False
 
     # ------------------------------------------------------------ journal
@@ -224,6 +224,9 @@ class Bot(object):
             cap = int(self.cfg.get(key) or 0)
             if cap and len(state["orders"]) >= cap:
                 return "limit transakcji na dziś"
+        cap = int(self.cfg.get("max_open_positions") or 0)
+        if cap and len(self.positions()) >= cap:
+            return "limit otwartych pozycji"
         reasons, _ = risk.window_check(self.local, dict(risk.DEFAULTS, **self.cfg))
         return "poza oknem wejść" if reasons else None
 
@@ -268,10 +271,14 @@ class Bot(object):
             return
         order = sizer.bracket_order(s)
         if order is None:
-            if s["bound_by"] == "cash" and s["qty"] == 0:
-                self.no_cash.append(sym)     # one line for all of them, in step()
+            small = s["qty"] > 0 and s["cost"] < float(self.cfg.get("min_order_usd") or 0)
+            if small or (s["bound_by"] == "cash" and s["qty"] == 0):
+                self.too_small.append(sym)     # one line for all of them, in step()
             else:
                 self.log("POMINIĘTO %s: %s" % (sym, s["refusal"]))
+            return
+        if fill * int(order["qty"]) < Decimal(str(self.cfg.get("min_order_usd") or 0)):
+            self.too_small.append(sym)
             return
         got = risk.check([order], self.cfg, portfolio, {sym: float(fill)}, state, now=self.now,
                          price_times={sym: known})["results"][0]
@@ -315,8 +322,9 @@ class Bot(object):
                 if self.can_enter():
                     break
                 self.try_enter(res, price, known)
-        if self.no_cash:
-            self.log("POMINIĘTO, brak wolnej gotówki (%d): %s" % (len(self.no_cash), ", ".join(self.no_cash)))
+        if self.too_small:
+            self.log("POMINIĘTO, za mała pozycja lub brak gotówki (%d): %s" % (
+                len(self.too_small), ", ".join(self.too_small)))
         self.log("KROK otwarte: %d, świeże sygnały: %d, błędy danych: %d%s" % (
             len(self.positions()), self.signals, len(self.errors), " (%s)" % why if why else ""))
         for e in self.errors[:5]:
