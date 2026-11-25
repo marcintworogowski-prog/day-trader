@@ -1,2 +1,5 @@
 09:47 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0
 09:48 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0
+10:35 WEJŚCIE MCD 13 szt. po 282.71, stop 280.95, cel 286.20, ryzyko 22.88 USD
+10:35 POMINIĘTO, za mała pozycja lub brak gotówki (5): HD, UNP, PG, GE, NEE
+10:35 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
