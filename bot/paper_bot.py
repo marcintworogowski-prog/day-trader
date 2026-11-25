@@ -15,12 +15,14 @@ Fills are the last price, 0.05% against us, rounded to the cent against us.
 Stops and targets are checked on the last price at each step, so a late step
 can fill well past a stop. A position still open after the close (a missed
 step) is closed at that session's last price.
+Every step also draws journal/dashboard.svg.
 """
 
 import argparse
 import concurrent.futures
 import contextlib
 import datetime
+import hashlib
 import importlib.util
 import io
 import json
@@ -32,6 +34,9 @@ from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
+sys.path.insert(0, HERE)
+import dashboard  # noqa: E402
+
 SKILLS = os.path.join(PROJECT, ".claude", "skills")
 
 
@@ -49,6 +54,7 @@ risk = _load("trader-risk", "check")
 review = _load("trader-review", "review")
 
 BOT_TAG = "[bot]"
+BOT_START = datetime.date(2026, 11, 25)      # the panel and the weekly report start here
 SLIPPAGE = Decimal("0.0005")
 FLAT_MINUTES = 10                # flat this long before the close
 MAX_SIGNAL_MINUTES = 20          # an older breakout is not chased
@@ -136,6 +142,8 @@ class Bot(object):
         self.signals = 0
         self.errors = []
         self.too_small = []
+        self.prices = {}                 # {SYM: last price}, for the panel
+        self.status, self.reason = "GRA", ""
         self.failed = False
 
     # ------------------------------------------------------------ journal
@@ -199,6 +207,7 @@ class Bot(object):
                 row["ticker"], "; ".join(errors) or "brak notowań"))
             return
         price, known = got
+        self.prices[row["ticker"]] = price
         if over:
             self.close(row, price, "zamknięcie po sesji, ostatnia cena sesji", day)
             return
@@ -292,6 +301,7 @@ class Bot(object):
                           "--stop", order["stop_loss_stop_price"], "--cel", order["take_profit_limit_price"],
                           "--wielkosc", order["qty"], "--config", self.cfg_path,
                           "--notatka", "%s sygnał %s" % (BOT_TAG, trig["time"])])
+        self.prices[sym] = price
         self.log("WEJŚCIE %s %s szt. po %s, stop %s, cel %s, ryzyko %.2f USD" % (
             sym, order["qty"], fill, order["stop_loss_stop_price"], order["take_profit_limit_price"],
             (float(fill) - s["stop"]) * s["qty"]))
@@ -308,6 +318,8 @@ class Bot(object):
         closes = datetime.datetime.combine(self.today, hours[1]) if hours else midnight
         in_session = opens <= self.local < closes
         held = self.positions()
+        if not in_session:
+            self.status, self.reason = "POZA SESJĄ", self.session_note(hours)
         if not in_session and not held:
             print("Poza sesją NYSE (%s w Nowym Jorku). Brak transakcji, kończę." %
                   self.local.strftime("%Y-%m-%d %H:%M"))
@@ -322,6 +334,7 @@ class Bot(object):
                 if self.can_enter():
                     break
                 self.try_enter(res, price, known)
+        self.reason = why or "szukam wybić, świeże sygnały: %d" % self.signals
         if self.too_small:
             self.log("POMINIĘTO, za mała pozycja lub brak gotówki (%d): %s" % (
                 len(self.too_small), ", ".join(self.too_small)))
@@ -330,6 +343,122 @@ class Bot(object):
         for e in self.errors[:5]:
             print("  dane: " + e)
         return 1 if self.failed else 0
+
+
+    # ------------------------------------------------------------ the panel
+
+    def session_note(self, hours):
+        if not hours:
+            return "giełda dziś zamknięta"
+        if self.local.time() < hours[0]:
+            return "sesja od %s w Nowym Jorku" % hours[0].strftime("%H:%M")
+        return "sesja zakończona"
+
+    def spy_by_day(self, days):
+        """Buy & hold SPY worth the budget on days[0], one value per day, or [] without data."""
+        try:
+            if self.offline:
+                with open(os.path.join(self.offline, "SPY-daily.json"), encoding="utf-8") as fh:
+                    text = fh.read()
+            else:
+                text = review.yahoo_get(review.spy_path(days[0], days[-1]))
+            closes = {d: float(c) for d, c in review.parse_daily(text)}
+        except (review.ReviewError, OSError) as e:
+            print("  SPY: %s" % e)
+            return []
+        base = closes.get(days[0])
+        if not base:
+            return []
+        return [float(self.cfg["budget"]) * closes[d] / base if d in closes else None for d in days]
+
+    def panel_data(self):
+        try:
+            rows = self.rows()
+            review.closed_between(rows, datetime.date.min, datetime.date.max)     # every number is readable
+        except review.ReviewError as e:
+            rows, self.failed, self.reason = [], True, str(e)
+        budget, what = float(self.cfg["budget"]), "dziennik"
+        num = {r["id"]: [float(review.number(r[k], what)) for k in ("wejscie", "stop", "cel", "wielkosc")]
+               for r in rows}
+        shut = [r for r in rows if r["wyjscie"].strip()]
+        held = [r for r in rows if not r["wyjscie"].strip()]
+        missing = sorted({r["ticker"] for r in held} - set(self.prices))
+        if missing and entry.session(self.today):
+            charts, _ = get_charts(missing, self.today, self.today, self.offline)
+            for sym, ch in charts.items():
+                got = last_price(ch, self.today, self.now, self.simulated)
+                if got:
+                    self.prices[sym] = got[0]
+
+        def gain(r):
+            e, _, _, n = num[r["id"]]
+            return (float(review.number(r["wyjscie"], what)) - e) * n
+        opened, floating = [], 0.0
+        for r in held:
+            e, s, t, n = num[r["id"]]
+            last = self.prices.get(r["ticker"])
+            res = None if last is None else (last - e) * n
+            floating += res or 0.0
+            opened.append({"ticker": r["ticker"], "entry": e, "stop": s, "target": t, "last": last, "result": res})
+        done = [r for r in shut if r["data_wyjscia"] == self.today.isoformat()]
+        start = min(BOT_START, self.today)
+        base = start - datetime.timedelta(days=1)
+        while not entry.session(base):
+            base -= datetime.timedelta(days=1)
+        days, d = [base], start
+        while d <= self.today:
+            s = entry.session(d)
+            if s and self.local >= datetime.datetime.combine(d, s[0]):
+                days.append(d)
+            d += datetime.timedelta(days=1)
+        account = [budget + sum(gain(r) for r in shut if r["data_wyjscia"] <= d.isoformat()) for d in days]
+        account[-1] = budget + sum(gain(r) for r in shut) + floating
+        return {"utc": self.now, "new_york": self.local, "status": "BŁĄD" if self.failed else self.status,
+                "reason": self.reason or ("problem z danymi" if self.failed else ""), "budget": budget,
+                "days": days, "account": [round(x, 2) for x in account], "spy": self.spy_by_day(days),
+                "open": opened,
+                "closed": [{"ticker": r["ticker"], "entry": num[r["id"]][0],
+                            "exit": float(review.number(r["wyjscie"], what)),
+                            "pct": 100.0 * gain(r) / (num[r["id"]][0] * num[r["id"]][3]),
+                            "result": gain(r)} for r in done],
+                "today": round(sum(gain(r) for r in done) + floating, 2),
+                "total": round(account[-1] - budget, 2), "trades": len(rows)}
+
+    def write_panel(self):
+        """journal/dashboard.svg. Outside the session a picture that differs only by the clock is left
+        alone, so the workflow does not commit every ten minutes."""
+        d = self.panel_data()
+        path = os.path.join(self.root, "journal", "dashboard.svg")
+        key = json.dumps({k: v for k, v in d.items() if k not in ("utc", "new_york")}, sort_keys=True, default=str)
+        mark = "<!-- %s %s -->\n" % (dashboard.to_poland(self.now).date(),
+                                     hashlib.sha256(key.encode("utf-8")).hexdigest()[:16])
+        if d["status"] != "GRA" and os.path.exists(path):
+            with open(path, encoding="utf-8") as fh:
+                if fh.read().endswith(mark):
+                    return
+        svg = dashboard.render(d)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path + ".tmp", "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(svg + mark)
+        os.replace(path + ".tmp", path)
+
+
+def run_step(bot):
+    """One step, then the panel, also after an error. Returns the exit code."""
+    crashed = ""
+    try:
+        code = bot.step()
+    except (BotError, entry.EntryError, risk.RiskError, review.ReviewError, OSError) as e:
+        print("paper_bot.py: %s" % e, file=sys.stderr)
+        crashed, bot.failed, code = str(e), True, 1
+    if bot.failed:
+        bot.reason = crashed or "problem z danymi (Yahoo)"
+    try:
+        bot.write_panel()
+    except Exception as e:               # the picture must never stop the trading step
+        print("paper_bot.py: panel: %s" % e, file=sys.stderr)
+        code = 1
+    return code
 
 
 def main(argv=None):
@@ -359,7 +488,7 @@ def main(argv=None):
                 shutil.copy(src, os.path.join(tmp, "journal", "trades.csv"))
             root = tmp
             print("PRÓBA: nic nie zostanie zapisane.")
-        return Bot(root, cfg, a.limits, read_universe(a.universe), now, bool(a.now), a.offline).step()
+        return run_step(Bot(root, cfg, a.limits, read_universe(a.universe), now, bool(a.now), a.offline))
     except (BotError, entry.EntryError, risk.RiskError, review.ReviewError, OSError) as e:
         print("paper_bot.py: %s" % e, file=sys.stderr)
         return 1

@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import paper_bot  # noqa: E402
 
 entry, review = paper_bot.entry, paper_bot.review
-BOT_START = datetime.date(2026, 11, 25)      # no logs are expected before this day
+BOT_START = paper_bot.BOT_START      # no logs are expected before this day
 MAX_GAP_MINUTES = 30                         # the schedule is every 10 minutes; GitHub may be late
 
 

@@ -36,6 +36,8 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
 - `.github/workflows/weekly-report.yml`: w piątek 22:30 UTC i ręcznie uruchamia
   `bot/weekly_report.py` i tworzy Issue "Raport tygodnia RRRR-MM-DD" (ponownie
   tego samego dnia: aktualizuje je). Dni z problemami bierze z logów dnia.
+- Po każdym kroku `bot/dashboard.py` rysuje `journal/dashboard.svg` (pokazany
+  w README.md). Poza sesją plik zmienia się tylko wtedy, gdy zmienia się treść.
 - Przed ręczną zmianą dziennika `git pull`, po niej commit i `git push`.
 - Bot nie używa SEC, brokera ani kluczy. E-mail, `trader/` i `repo/` nie mogą
   trafić na GitHuba. Commity tylko z adresem noreply (ustawiony w tym repo).
@@ -53,7 +55,7 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
 | folder | co |
 | --- | --- |
 | `.claude/skills/` | skille, których używa Claude |
-| `repo/` | sklonowane repo; własne pliki: `repo/tests/test_review.py`, `test_bot.py`, `test_weekly_report.py` (nie ma ich na GitHubie) |
+| `repo/` | sklonowane repo; własne pliki: `repo/tests/test_review.py`, `test_bot.py`, `test_weekly_report.py`, `test_dashboard.py` (nie ma ich na GitHubie) |
 | `bot/` | bot papierowy, limity, lista akcji |
 | `trader/` | `config.json` i pliki robocze skilli (dane osobowe, nie publikuj) |
 | `journal/trades.csv` | dziennik transakcji |
