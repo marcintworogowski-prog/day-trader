@@ -12,3 +12,5 @@
 13:28 KROK otwarte: 2, świeże sygnały: 0, błędy danych: 0 (limit transakcji na dziś)
 14:30 KROK otwarte: 2, świeże sygnały: 0, błędy danych: 0 (limit transakcji na dziś)
 15:32 KROK otwarte: 2, świeże sygnały: 0, błędy danych: 0 (limit transakcji na dziś)
+16:39 WYJŚCIE DHR 14 szt. po 227.23 (zamknięcie po sesji, ostatnia cena sesji), wynik -23.10 USD, -0.49R
+16:39 WYJŚCIE BLK 1 szt. po 1141.28 (zamknięcie po sesji, ostatnia cena sesji), wynik 11.16 USD, 1.04R
