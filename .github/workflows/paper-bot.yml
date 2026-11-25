@@ -1,0 +1,41 @@
+name: paper-bot
+
+on:
+  schedule:
+    # 13:00-21:59 UTC covers the NYSE session in winter and summer time; the bot checks the hours itself
+    - cron: "*/10 13-21 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-bot
+  cancel-in-progress: false
+
+jobs:
+  step:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Paper bot, one step
+        run: python3 bot/paper_bot.py
+      - name: Save the journal
+        if: ${{ !cancelled() }}
+        run: |
+          git add -A journal
+          if git diff --cached --quiet; then
+            echo "Nothing to save."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "bot: journal $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase
+          done
+          exit 1

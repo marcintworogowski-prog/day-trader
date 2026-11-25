@@ -1,0 +1,8 @@
+# dane osobowe i pliki robocze: nigdy na GitHuba
+trader/
+repo/
+.claude/settings.local.json
+__pycache__/
+*.pyc
+*.tmp
+.env
