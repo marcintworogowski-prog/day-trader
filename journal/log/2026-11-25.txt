@@ -5,3 +5,7 @@
 10:35 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
 11:43 POMINIĘTO, za mała pozycja lub brak gotówki (1): V
 11:43 KROK otwarte: 1, świeże sygnały: 1, błędy danych: 0
+12:35 WYJŚCIE MCD 13 szt. po 286.24 (cel), wynik 45.89 USD, 2.01R
+12:35 WEJŚCIE DHR 14 szt. po 228.88, stop 225.53, cel 233.45, ryzyko 46.90 USD
+12:35 WEJŚCIE BLK 1 szt. po 1130.12, stop 1119.38, cel 1149.29, ryzyko 10.74 USD
+12:35 KROK otwarte: 2, świeże sygnały: 5, błędy danych: 0

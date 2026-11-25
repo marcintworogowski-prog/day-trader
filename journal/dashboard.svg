@@ -1,34 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1066" width="800" height="1066" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1112" width="800" height="1112" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" role="img">
 <title>Panel bota papierowego</title>
-<rect width="800" height="1066" fill="#f9f9f7"/>
-<rect x="8" y="8" width="784" height="1050" rx="16" fill="#fcfcfb" stroke="#e1e0d9"/>
+<rect width="800" height="1112" fill="#f9f9f7"/>
+<rect x="8" y="8" width="784" height="1096" rx="16" fill="#fcfcfb" stroke="#e1e0d9"/>
 <text x="32" y="60" font-size="40" fill="#0b0b0b" font-weight="700" text-anchor="start">Bot papierowy</text>
 <text x="768" y="60" font-size="28" fill="#52514e" font-weight="400" text-anchor="end">25.11.2026</text>
-<text x="32" y="102" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Polska 17:43   ·   Nowy Jork 11:43</text>
+<text x="32" y="102" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Polska 18:35   ·   Nowy Jork 12:35</text>
 <circle cx="42" cy="141" r="10" fill="#0ca30c"/>
 <text x="64" y="150" font-size="28" fill="#0b0b0b" font-weight="700" text-anchor="start">GRA</text>
-<text x="144" y="150" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">szukam wybić, świeże sygnały: 1</text>
+<text x="144" y="150" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">szukam wybić, świeże sygnały: 5</text>
 <line x1="32" y1="174" x2="768" y2="174" stroke="#e1e0d9" stroke-width="1"/>
 <text x="32" y="216" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Wynik dziś</text>
-<text x="32" y="262" font-size="36" fill="#006300" font-weight="700" text-anchor="start">+32,43 $</text>
+<text x="32" y="262" font-size="36" fill="#006300" font-weight="700" text-anchor="start">+43,71 $</text>
 <text x="288" y="216" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Od startu</text>
-<text x="288" y="262" font-size="36" fill="#006300" font-weight="700" text-anchor="start">+32,43 $</text>
+<text x="288" y="262" font-size="36" fill="#006300" font-weight="700" text-anchor="start">+43,71 $</text>
 <text x="544" y="216" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Transakcje</text>
-<text x="544" y="262" font-size="36" fill="#0b0b0b" font-weight="700" text-anchor="start">1</text>
+<text x="544" y="262" font-size="36" fill="#0b0b0b" font-weight="700" text-anchor="start">3</text>
 <text x="32" y="334" font-size="28" fill="#0b0b0b" font-weight="600" text-anchor="start">Wartość konta, start 5 000,00 $</text>
 <line x1="32" y1="366" x2="60" y2="366" stroke="#2a78d6" stroke-width="4"/>
-<text x="70" y="374" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Konto 5 032,43 $</text>
+<text x="70" y="374" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Konto 5 043,71 $</text>
 <line x1="362" y1="366" x2="390" y2="366" stroke="#eb6834" stroke-width="4"/>
-<text x="400" y="374" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">SPY kup i trzymaj 4 860,14 $</text>
-<line x1="116" y1="588.141" x2="756" y2="588.141" stroke="#e1e0d9" stroke-width="1"/>
-<text x="104" y="596.141" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">4 900</text>
-<line x1="116" y1="471.174" x2="756" y2="471.174" stroke="#e1e0d9" stroke-width="1"/>
-<text x="104" y="479.174" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">5 000</text>
+<text x="400" y="374" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">SPY kup i trzymaj 4 937,12 $</text>
+<line x1="116" y1="601.099" x2="756" y2="601.099" stroke="#e1e0d9" stroke-width="1"/>
+<text x="104" y="609.099" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">4 950</text>
+<line x1="116" y1="518.082" x2="756" y2="518.082" stroke="#e1e0d9" stroke-width="1"/>
+<text x="104" y="526.082" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">5 000</text>
+<line x1="116" y1="435.065" x2="756" y2="435.065" stroke="#e1e0d9" stroke-width="1"/>
+<text x="104" y="443.065" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">5 050</text>
 <line x1="116" y1="664" x2="756" y2="664" stroke="#c3c2b7" stroke-width="1"/>
-<polyline fill="none" stroke="#eb6834" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="116.0,471.2 756.0,634.8"><title>SPY</title></polyline>
-<circle cx="756.0" cy="634.8" r="7" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>SPY 25.11: 4 860,14 $</title></circle>
-<polyline fill="none" stroke="#2a78d6" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="116.0,471.2 756.0,433.2"><title>Konto</title></polyline>
-<circle cx="756.0" cy="433.2" r="7" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>Konto 25.11: 5 032,43 $</title></circle>
+<polyline fill="none" stroke="#eb6834" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="116.0,518.1 756.0,622.5"><title>SPY</title></polyline>
+<circle cx="756.0" cy="622.5" r="7" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>SPY 25.11: 4 937,12 $</title></circle>
+<polyline fill="none" stroke="#2a78d6" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="116.0,518.1 756.0,445.5"><title>Konto</title></polyline>
+<circle cx="756.0" cy="445.5" r="7" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>Konto 25.11: 5 043,71 $</title></circle>
 <text x="116" y="698" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="start">24.11</text>
 <text x="756" y="698" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">25.11</text>
 <text x="32" y="764" font-size="28" fill="#0b0b0b" font-weight="600" text-anchor="start">Otwarte pozycje</text>
@@ -39,15 +41,25 @@
 <text x="625" y="808" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">Cena</text>
 <text x="768" y="808" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="end">Wynik</text>
 <line x1="32" y1="822" x2="768" y2="822" stroke="#e1e0d9" stroke-width="1"/>
-<text x="32" y="854" font-size="24" fill="#0b0b0b" font-weight="700" text-anchor="start">MCD</text>
-<text x="265" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">282,71</text>
-<text x="385" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">280,95</text>
-<text x="505" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">286,20</text>
-<text x="625" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">285,20</text>
-<text x="768" y="854" font-size="24" fill="#006300" font-weight="700" text-anchor="end">+32,43 $</text>
-<text x="32" y="914" font-size="28" fill="#0b0b0b" font-weight="600" text-anchor="start">Zamknięte dziś</text>
-<text x="32" y="958" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">Dziś brak zamkniętych transakcji.</text>
-<line x1="32" y1="998" x2="768" y2="998" stroke="#e1e0d9" stroke-width="1"/>
-<text x="32" y="1036" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="start">Fikcyjny budżet, bez prawdziwych pieniędzy.</text>
+<text x="32" y="854" font-size="24" fill="#0b0b0b" font-weight="700" text-anchor="start">DHR</text>
+<text x="265" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">228,88</text>
+<text x="385" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">225,53</text>
+<text x="505" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">233,45</text>
+<text x="625" y="854" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">228,76</text>
+<text x="768" y="854" font-size="24" fill="#d03b3b" font-weight="700" text-anchor="end">−1,61 $</text>
+<line x1="32" y1="868" x2="768" y2="868" stroke="#e1e0d9" stroke-width="1"/>
+<text x="32" y="900" font-size="24" fill="#0b0b0b" font-weight="700" text-anchor="start">BLK</text>
+<text x="265" y="900" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">1130,12</text>
+<text x="385" y="900" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">1119,38</text>
+<text x="505" y="900" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">1149,29</text>
+<text x="625" y="900" font-size="24" fill="#0b0b0b" font-weight="400" text-anchor="end">1129,55</text>
+<text x="768" y="900" font-size="24" fill="#d03b3b" font-weight="700" text-anchor="end">−0,57 $</text>
+<text x="32" y="960" font-size="28" fill="#0b0b0b" font-weight="600" text-anchor="start">Zamknięte dziś</text>
+<text x="32" y="1004" font-size="24" fill="#0b0b0b" font-weight="700" text-anchor="start">MCD</text>
+<text x="152" y="1004" font-size="24" fill="#52514e" font-weight="400" text-anchor="start">282,71 → 286,24</text>
+<text x="520" y="1004" font-size="24" fill="#52514e" font-weight="400" text-anchor="end">+1,25%</text>
+<text x="768" y="1004" font-size="24" fill="#006300" font-weight="700" text-anchor="end">+45,89 $</text>
+<line x1="32" y1="1044" x2="768" y2="1044" stroke="#e1e0d9" stroke-width="1"/>
+<text x="32" y="1082" font-size="22" fill="#6b6a66" font-weight="400" text-anchor="start">Fikcyjny budżet, bez prawdziwych pieniędzy.</text>
 </svg>
-<!-- 2026-11-25 0865de1f63a2eb29 -->
+<!-- 2026-11-25 de3020289128c86a -->
