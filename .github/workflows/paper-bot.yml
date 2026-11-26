@@ -2,40 +2,53 @@ name: paper-bot
 
 on:
   schedule:
-    # 13:00-21:59 UTC covers the NYSE session in winter and summer time; the bot checks the hours itself
-    - cron: "*/10 13-21 * * 1-5"
+    # Two loops a day, cron in UTC. The NYSE session is 13:30-20:00 UTC in summer time
+    # and 14:30-21:00 UTC in winter time. Loop 1 starts before the open (9:00 ET summer,
+    # 8:00 ET winter) and runs up to 5 h 45 min; loop 2 is queued in the middle of the
+    # session and takes over when loop 1 ends. A late start just starts at once.
+    # The bot checks the NYSE calendar itself (holidays, early closes) and each loop
+    # stops by itself when the session is over and nothing is open.
+    - cron: "0 13 * * 1-5"
+    - cron: "30 17 * * 1-5"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: steps on a copy of journal/, nothing committed"
+        type: boolean
+        default: false
+      now:
+        description: 'Dry run only: replay from this New York time, "YYYY-MM-DD HH:MM" (empty = now)'
+        type: string
+        default: ""
 
 permissions:
   contents: write
 
 concurrency:
-  group: paper-bot
+  # a dry run never waits for, or replaces, the live loop
+  group: paper-bot${{ inputs.dry_run && '-dry' || '' }}
   cancel-in-progress: false
 
 jobs:
-  step:
+  loop:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.repository.default_branch }}
-      - name: Paper bot, one step
-        run: python3 bot/paper_bot.py
-      - name: Save the journal
-        if: ${{ !cancelled() }}
+      - name: Git identity (noreply)
         run: |
-          git add -A journal
-          if git diff --cached --quiet; then
-            echo "Nothing to save."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "bot: journal $(TZ=America/New_York date '+%Y-%m-%d %H:%M') ET"
-          for i in 1 2 3; do
-            git push && exit 0
-            git pull --rebase
-          done
-          exit 1
+      - name: Paper bot loop, a step every 5 minutes
+        env:
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+          NOW: ${{ inputs.now }}
+        run: |
+          args=()
+          if [ -n "$DRY_RUN" ]; then
+            args+=(--dry-run)
+            if [ -n "$NOW" ]; then args+=(--now "$NOW"); fi
+          fi
+          python3 bot/loop.py "${args[@]}"

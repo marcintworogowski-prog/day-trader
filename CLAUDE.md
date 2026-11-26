@@ -31,8 +31,16 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
   `journal/log/RRRR-MM-DD.txt`.
 - Próba bez zapisu: `python bot/paper_bot.py --dry-run --now "2026-11-24 10:20"`
 - Kalendarz NYSE w `trader-entry` kończy się na 2027: potem trzeba go uzupełnić.
-- `.github/workflows/paper-bot.yml`: co 10 minut pon-pt 13:00-21:59 UTC i
-  ręcznie; zapisuje zmiany w `journal/`. GitHub może się spóźniać lub pominąć krok.
+- `bot/loop.py`: pętla, krok bota co 5 min (pełne 5 min + 40 s), pierwszy krok
+  od razu po starcie. Kończy się po sesji (gdy nic nie jest otwarte), w dzień
+  bez sesji po jednym kroku, albo po 5 h 45 min. Commit `journal/` po kroku
+  z transakcją, poza tym co 30 min i na końcu.
+  Próba: `python bot/loop.py --dry-run` (kopia dziennika, bez commita), powtórka:
+  `python bot/loop.py --dry-run --now "2026-11-25 15:30"` (bez czekania).
+- `.github/workflows/paper-bot.yml`: dwie pętle pon-pt, cron 13:00 UTC (przed
+  otwarciem) i 17:30 UTC (w połowie sesji; czeka w kolejce `concurrency` na
+  koniec pierwszej). Ręcznie: `workflow_dispatch` z `dry_run` i `now`; próba ma
+  osobną grupę `concurrency`. GitHub może się spóźniać lub pominąć start.
 - `.github/workflows/weekly-report.yml`: w piątek 22:30 UTC i ręcznie uruchamia
   `bot/weekly_report.py` i tworzy Issue "Raport tygodnia RRRR-MM-DD" (ponownie
   tego samego dnia: aktualizuje je). Dni z problemami bierze z logów dnia.
