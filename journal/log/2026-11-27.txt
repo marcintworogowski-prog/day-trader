@@ -1,0 +1,4 @@
+09:30 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+09:35 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+09:40 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+09:45 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0
