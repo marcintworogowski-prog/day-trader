@@ -5,3 +5,15 @@
 09:50 WEJŚCIE CVS 45 szt. po 82.81, stop 82.00, cel 84.16, ryzyko 36.45 USD
 09:50 POMINIĘTO, za mała pozycja lub brak gotówki (5): CMCSA, PYPL, DIS, KO, COST
 09:50 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
+09:55 POMINIĘTO, za mała pozycja lub brak gotówki (10): DE, OXY, COP, PYPL, PANW, CRWD, V, VZ, SLB, KO
+09:55 KROK otwarte: 1, świeże sygnały: 10, błędy danych: 0
+10:00 POMINIĘTO, za mała pozycja lub brak gotówki (8): DE, PYPL, COP, VZ, V, SLB, COST, KO
+10:00 KROK otwarte: 1, świeże sygnały: 8, błędy danych: 0
+10:05 POMINIĘTO, za mała pozycja lub brak gotówki (10): DE, CMCSA, PYPL, PEP, COP, V, KO, COST, SLB, VZ
+10:05 KROK otwarte: 1, świeże sygnały: 10, błędy danych: 0
+10:10 POMINIĘTO, za mała pozycja lub brak gotówki (11): DE, CMCSA, PYPL, COP, V, VZ, SLB, AMZN, KO, COST, DIS
+10:10 KROK otwarte: 1, świeże sygnały: 11, błędy danych: 0
+10:15 POMINIĘTO, za mała pozycja lub brak gotówki (14): DE, SBUX, EOG, QCOM, IBM, COP, NKE, CRWD, XOM, VZ, SLB, AMZN, AVGO, NEE
+10:15 KROK otwarte: 1, świeże sygnały: 14, błędy danych: 0
+10:20 POMINIĘTO, za mała pozycja lub brak gotówki (8): SBUX, QCOM, NKE, MA, XOM, AMZN, TXN, NEE
+10:20 KROK otwarte: 1, świeże sygnały: 8, błędy danych: 0
