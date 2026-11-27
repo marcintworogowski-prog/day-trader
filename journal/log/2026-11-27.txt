@@ -2,3 +2,6 @@
 09:35 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
 09:40 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
 09:45 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0
+09:50 WEJŚCIE CVS 45 szt. po 82.81, stop 82.00, cel 84.16, ryzyko 36.45 USD
+09:50 POMINIĘTO, za mała pozycja lub brak gotówki (5): CMCSA, PYPL, DIS, KO, COST
+09:50 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
