@@ -21,8 +21,15 @@ dziennikiem transakcji. Z użytkownikiem rozmawiaj po polsku, prostymi słowami.
   zakresu otwarcia na 100 akcjach z `bot/universe.txt`, stop w połowie zakresu,
   cel 2R, wielkość z trader-budget, każda transakcja przez trader-risk.
 - Limity: `bot/limits.json` (bez danych osobowych). `paper` musi być `true`.
-- Najwyżej 2 otwarte pozycje bota (`max_open_positions`), pozycja min. 1000 $
-  (`min_order_usd`); mniejsze sygnały są pomijane i nie zużywają limitu dnia.
+- Wielkość = min(50 $ / odległość do stopu, 1250 $ / cena): pozycja maks. 25%
+  budżetu (`max_position_pct` 25, `max_order_usd` 1250; po stratach 25% mniejszego
+  konta), bez bufora gotówki (`cash_buffer_pct` 0), żeby zmieściły się 4 pozycje.
+- Najwyżej 4 otwarte pozycje bota (`max_open_positions`), 6 transakcji dziennie,
+  pozycja min. 1000 $ (`min_order_usd`); mniejsze sygnały są pomijane i nie
+  zużywają limitu dnia. Przy wielu sygnałach naraz pierwszeństwo ma wolumen.
+- Strata dzienna 150 $ to strata ZREALIZOWANA dziś (wynik zamkniętych dzisiejszych
+  transakcji, bez ryzyka otwartych). Wejście jest blokowane, gdy ta strata plus
+  ryzyko nowej transakcji przekracza 150 $; po stracie 150 $ koniec wejść na dziś.
 - Cena wykonania: ostatnia cena, 0,05% na niekorzyść. Stop i cel sprawdzane na
   ostatniej cenie w danym kroku. Sygnał starszy niż 20 min jest pomijany.
 - 10 min przed końcem sesji zamyka wszystko. Gdy krok przepadnie, następny

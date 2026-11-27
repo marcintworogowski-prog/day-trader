@@ -142,6 +142,7 @@ class Bot(object):
         self.signals = 0
         self.errors = []
         self.too_small = []
+        self.day_loss_blocked = []
         self.prices = {}                 # {SYM: last price}, for the panel
         self.status, self.reason = "GRA", ""
         self.failed = False
@@ -170,7 +171,9 @@ class Bot(object):
             raise BotError(err.getvalue().strip() or "trader-review odmówił zapisu")
 
     def account(self):
-        """(portfolio, today's state) for trader-risk, from every row of the journal."""
+        """(portfolio, today's state) for trader-risk, from every row of the journal.
+        Each of today's entries carries its REALIZED loss as max_loss (0 while open, minus the result
+        once closed), so trader-risk's daily-loss rule counts the money lost today, not the risk taken."""
         cash = Decimal(str(self.cfg["budget"]))
         held, placed = [], []
         for r in self.rows():
@@ -182,8 +185,9 @@ class Bot(object):
                 cash -= e * n
                 held.append({"ticker": r["ticker"], "lots": [{"shares": float(n), "cost": float(e * n)}]})
             if r["data"] == self.today.isoformat():
+                lost = (e - review.number(r["wyjscie"], what)) * n if r["wyjscie"].strip() else Decimal(0)
                 placed.append({"status": "placed", "date": r["data"], "symbol": r["ticker"], "side": "buy",
-                               "kind": "entry", "max_loss": float((e - s) * n)})
+                               "kind": "entry", "max_loss": float(lost)})
         return {"cash": float(cash), "positions": held}, {"orders": placed}
 
     # ------------------------------------------------------------ exits
@@ -226,9 +230,21 @@ class Bot(object):
 
     # ------------------------------------------------------------ entries
 
+    def realized(self, today_only):
+        """Result in USD of the closed trades (today's entries only, or all of them)."""
+        total = Decimal(0)
+        for r in self.rows():
+            if r["wyjscie"].strip() and (not today_only or r["data"] == self.today.isoformat()):
+                what = "transakcja %s" % r["id"]
+                total += (review.number(r["wyjscie"], what) - review.number(r["wejscie"], what)) *                     review.number(r["wielkosc"], what)
+        return total
+
     def can_enter(self):
         """None, or why no entry is possible now (then there is nothing to scan)."""
         _, state = self.account()
+        daily = Decimal(str(self.cfg.get("max_daily_loss_usd") or 0))
+        if daily and -self.realized(True) >= daily:
+            return "limit straty dziennej"
         for key in ("max_trades_per_day", "max_orders_per_day"):
             cap = int(self.cfg.get(key) or 0)
             if cap and len(state["orders"]) >= cap:
@@ -273,7 +289,10 @@ class Bot(object):
             plan = {"symbol": sym, "side": "buy", "date": res["date"], "setup": "orb", "entry": float(c["entry"]),
                     "stop": float(c["stop"]), "target": float(c["target"]), "entry_time": trig["time"]}
             # the journal records `fill`, so a fill under the plan's entry is sized at the plan's (higher) entry
-            s = sizer.size_trade(plan, self.cfg, price=float(fill), cash=portfolio["cash"],
+            # the position cap is a share of the budget, or of a smaller account after losses
+            # (trader-risk measures it on the account, so both agree)
+            budget = min(float(self.cfg["budget"]), float(self.cfg["budget"]) + float(self.realized(False)))
+            s = sizer.size_trade(plan, self.cfg, budget=budget, price=float(fill), cash=portfolio["cash"],
                                  today=self.today.isoformat())
         except (exitp.PlanError, sizer.SizeError) as e:
             self.log("POMINIĘTO %s: %s" % (sym, e))
@@ -292,6 +311,9 @@ class Bot(object):
         got = risk.check([order], self.cfg, portfolio, {sym: float(fill)}, state, now=self.now,
                          price_times={sym: known})["results"][0]
         if got["verdict"] != "PASS":
+            if all(r.startswith("daily loss") for r in got["reasons"]):
+                self.day_loss_blocked.append(sym)     # one line for all of them, in step()
+                return
             self.log("BLOCK %s: %s" % (sym, "; ".join(got["reasons"])))
             return
         if fill <= Decimal(order["stop_loss_stop_price"]):
@@ -338,6 +360,9 @@ class Bot(object):
         if self.too_small:
             self.log("POMINIĘTO, za mała pozycja lub brak gotówki (%d): %s" % (
                 len(self.too_small), ", ".join(self.too_small)))
+        if self.day_loss_blocked:
+            self.log("BLOCK, ryzyko ponad limit straty dziennej (%d): %s" % (
+                len(self.day_loss_blocked), ", ".join(self.day_loss_blocked)))
         self.log("KROK otwarte: %d, świeże sygnały: %d, błędy danych: %d%s" % (
             len(self.positions()), self.signals, len(self.errors), " (%s)" % why if why else ""))
         for e in self.errors[:5]:
