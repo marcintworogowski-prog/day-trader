@@ -39,3 +39,14 @@
 11:10 KROK otwarte: 1, świeże sygnały: 1, błędy danych: 0
 11:15 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0
 11:20 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0
+11:25 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0
+11:30 POMINIĘTO, za mała pozycja lub brak gotówki (1): BX
+11:30 KROK otwarte: 1, świeże sygnały: 1, błędy danych: 0
+11:35 POMINIĘTO, za mała pozycja lub brak gotówki (3): BX, GE, MS
+11:35 KROK otwarte: 1, świeże sygnały: 3, błędy danych: 0
+11:40 POMINIĘTO, za mała pozycja lub brak gotówki (2): BX, MS
+11:40 KROK otwarte: 1, świeże sygnały: 2, błędy danych: 0
+11:45 POMINIĘTO, za mała pozycja lub brak gotówki (4): BX, MS, CAT, ORCL
+11:45 KROK otwarte: 1, świeże sygnały: 4, błędy danych: 0
+11:50 POMINIĘTO, za mała pozycja lub brak gotówki (6): BX, WFC, GE, MS, CAT, WMT
+11:50 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
