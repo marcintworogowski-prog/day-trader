@@ -61,3 +61,12 @@
 12:15 POMINIĘTO, za mała pozycja lub brak gotówki (2): ADI, DHR
 12:15 KROK otwarte: 1, świeże sygnały: 2, błędy danych: 0
 12:20 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0
+12:25 POMINIĘTO, za mała pozycja lub brak gotówki (2): T, MCD
+12:25 KROK otwarte: 1, świeże sygnały: 2, błędy danych: 0
+12:30 POMINIĘTO, za mała pozycja lub brak gotówki (1): MCD
+12:30 KROK otwarte: 1, świeże sygnały: 1, błędy danych: 0
+12:35 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+12:40 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+12:45 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
+12:50 WYJŚCIE CVS 45 szt. po 82.48 (koniec sesji), wynik -14.85 USD, -0.41R
+12:50 KROK otwarte: 0, świeże sygnały: 0, błędy danych: 0 (poza oknem wejść)
