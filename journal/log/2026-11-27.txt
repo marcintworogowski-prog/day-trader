@@ -17,3 +17,15 @@
 10:15 KROK otwarte: 1, świeże sygnały: 14, błędy danych: 0
 10:20 POMINIĘTO, za mała pozycja lub brak gotówki (8): SBUX, QCOM, NKE, MA, XOM, AMZN, TXN, NEE
 10:20 KROK otwarte: 1, świeże sygnały: 8, błędy danych: 0
+10:25 POMINIĘTO, za mała pozycja lub brak gotówki (13): SBUX, QCOM, F, IBM, NKE, MA, TSLA, DAL, XOM, META, AMZN, TXN, NEE
+10:25 KROK otwarte: 1, świeże sygnały: 13, błędy danych: 0
+10:30 POMINIĘTO, za mała pozycja lub brak gotówki (14): EOG, QCOM, F, NKE, GM, XOM, ABNB, TSLA, MA, DAL, META, AMZN, TXN, NEE
+10:30 KROK otwarte: 1, świeże sygnały: 14, błędy danych: 0
+10:35 POMINIĘTO, za mała pozycja lub brak gotówki (12): EOG, QCOM, NKE, F, MA, XOM, ABNB, TSLA, META, DAL, AVGO, TXN
+10:35 KROK otwarte: 1, świeże sygnały: 12, błędy danych: 0
+10:40 POMINIĘTO, za mała pozycja lub brak gotówki (10): F, GM, MA, ABNB, TSLA, DAL, META, MU, JNJ, TXN
+10:40 KROK otwarte: 1, świeże sygnały: 10, błędy danych: 0
+10:45 POMINIĘTO, za mała pozycja lub brak gotówki (9): F, GM, ABNB, TSLA, AAPL, JNJ, DAL, MU, JPM
+10:45 KROK otwarte: 1, świeże sygnały: 9, błędy danych: 0
+10:50 POMINIĘTO, za mała pozycja lub brak gotówki (5): GM, SHOP, JNJ, MU, JPM
+10:50 KROK otwarte: 1, świeże sygnały: 5, błędy danych: 0
