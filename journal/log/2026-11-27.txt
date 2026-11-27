@@ -50,3 +50,14 @@
 11:45 KROK otwarte: 1, świeże sygnały: 4, błędy danych: 0
 11:50 POMINIĘTO, za mała pozycja lub brak gotówki (6): BX, WFC, GE, MS, CAT, WMT
 11:50 KROK otwarte: 1, świeże sygnały: 6, błędy danych: 0
+11:55 POMINIĘTO, za mała pozycja lub brak gotówki (8): WFC, GE, MS, AMGN, CAT, DHR, WMT, C
+11:55 KROK otwarte: 1, świeże sygnały: 8, błędy danych: 0
+12:00 POMINIĘTO, za mała pozycja lub brak gotówki (4): AMGN, PFE, DHR, WMT
+12:00 KROK otwarte: 1, świeże sygnały: 4, błędy danych: 0
+12:05 POMINIĘTO, za mała pozycja lub brak gotówki (5): AMGN, T, DHR, WMT, PG
+12:05 KROK otwarte: 1, świeże sygnały: 5, błędy danych: 0
+12:10 POMINIĘTO, za mała pozycja lub brak gotówki (5): AMGN, T, PFE, DHR, WMT
+12:10 KROK otwarte: 1, świeże sygnały: 5, błędy danych: 0
+12:15 POMINIĘTO, za mała pozycja lub brak gotówki (2): ADI, DHR
+12:15 KROK otwarte: 1, świeże sygnały: 2, błędy danych: 0
+12:20 KROK otwarte: 1, świeże sygnały: 0, błędy danych: 0
